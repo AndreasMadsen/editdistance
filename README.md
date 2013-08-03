@@ -4,8 +4,8 @@
 
 > This is an modified version of the Berghel Roach Levenshtein algortime
 > with the time complexity of `O(n + d^2)` (n longest string, d edit distance).
-> This is much faster compared to the naïve approach there uses O(n*m) cpu time
-> (string lengths).
+> This is much faster compared to the naïve approach there uses `O(n*m)` (n and m are string lengths)
+CPU time.
 
 ## Installation
 
