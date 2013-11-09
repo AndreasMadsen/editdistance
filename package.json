@@ -1,7 +1,7 @@
 {
   "name": "editdistance",
   "description": "A much faster than the naïve Levenshtein distance algoritme",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Andreas Madsen <amwebdk@gmail.com>",
   "main": "./editdistance.js",
   "scripts": {
