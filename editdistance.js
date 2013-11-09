@@ -1,44 +1,45 @@
 
 function EditDistance(pattern) {
-	if (!(this instanceof EditDistance)) return new EditDistance(pattern);
+  if (!(this instanceof EditDistance)) return new EditDistance(pattern);
 
-	// Note Int32Array could be used here but apperently that is slower
+  // Note Int32Array could be used here but apperently that is slower
   this.currentLeft = [];
-	this.currentRight = [];
-	this.lastLeft = [];
-	this.lastRight = [];
+  this.currentRight = [];
+  this.lastLeft = [];
+  this.lastRight = [];
 
-	this.pattern = pattern;
+  this.pattern = pattern;
   this.priorLeft = [];
-	this.priorRight = [];
+  this.priorRight = [];
 }
 module.exports = EditDistance;
 
 function intRound(num) {
-	return num << 0;
+  return num << 0;
 }
 
 var zeroVector = (function () {
-	function ZeroVector() {
-		this.zero = new Array(0);
-		this.extend(100);
-	}
-	ZeroVector.prototype.extend = function (total) {
-		for (var i = 0, l = total - this.zero.length; i < l; i++) this.zero.push(0);
-	};
+  function ZeroVector() {
+    this.zero = new Array(0);
+    this.extend(100);
+  }
 
-	ZeroVector.prototype.create = function (size) {
-		if (size > this.zero.length) this.extend(size);
-		return this.zero.slice(0, size);
-	};
-	return new ZeroVector();
+  ZeroVector.prototype.extend = function (total) {
+    for (var i = 0, l = total - this.zero.length; i < l; i++) this.zero.push(0);
+  };
+
+  ZeroVector.prototype.create = function (size) {
+    if (size > this.zero.length) this.extend(size);
+    return this.zero.slice(0, size);
+  };
+  return new ZeroVector();
 })();
 
 EditDistance.prototype.distance = function (target) {
-	var targetLength = target.length;
+  var targetLength = target.length;
 
-	var main = this.pattern.length - targetLength;
-	var distance = Math.abs(main);
+  var main = this.pattern.length - targetLength;
+  var distance = Math.abs(main);
 
   if (main <= 0) {
     this.ensureCapacityRight(distance, false);
@@ -55,9 +56,7 @@ EditDistance.prototype.distance = function (target) {
   }
 
   var even = true;
-  var debug = 0;
   while (true) {
-  	debug += 1;
     var offDiagonal = intRound((distance - main) / 2);
     this.ensureCapacityRight(offDiagonal, true);
 
@@ -65,14 +64,13 @@ EditDistance.prototype.distance = function (target) {
       this.lastRight[offDiagonal] = -1;
     }
 
-
     var immediateRight = -1;
     for (; offDiagonal > 0; offDiagonal--) {
       this.currentRight[offDiagonal] = immediateRight = this.computeRow(
         (main + offDiagonal), (distance - offDiagonal),
         this.pattern, target,
         this.priorRight[offDiagonal - 1], this.lastRight[offDiagonal], immediateRight
-       );
+      );
     }
 
     var offDiagonal = intRound((distance + main) / 2);
@@ -89,14 +87,14 @@ EditDistance.prototype.distance = function (target) {
         (main - offDiagonal), (distance - offDiagonal),
         this.pattern, target,
         immediateLeft, this.lastLeft[offDiagonal], this.priorLeft[offDiagonal - 1]
-       );
+      );
     }
 
     var mainRow = this.computeRow(
-			main, distance,
-			this.pattern, target,
-			immediateLeft, this.lastLeft[0], immediateRight
-		);
+      main, distance,
+      this.pattern, target,
+      immediateLeft, this.lastLeft[0], immediateRight
+    );
 
     if ((mainRow === targetLength) || (++distance > Infinity) || (distance < 0)) {
       break;
@@ -115,7 +113,6 @@ EditDistance.prototype.distance = function (target) {
     this.currentRight = tmp;
 
     even = !even;
-    if (debug === 10) break;
   }
 
   return distance;
@@ -160,6 +157,6 @@ EditDistance.prototype.resize = function (array, size, copy) {
   if (copy) {
     return array.concat(zeroVector.create(size - array.length));
   } else {
-		return zeroVector.create(size);
+    return zeroVector.create(size);
   }
 };
