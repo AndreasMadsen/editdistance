@@ -1,7 +1,7 @@
 {
   "name": "editdistance",
   "description": "A much faster than the naïve Levenshtein distance algoritme",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "Andreas Madsen <amwebdk@gmail.com>",
   "main": "./editdistance.js",
   "scripts": {
@@ -19,9 +19,5 @@
   "devDependencies": {
     "tap": "0.4.x"
   },
-  "license": "MIT",
-  "engines": {
-    "node": "0.10",
-    "npm": "1"
-  }
+  "license": "MIT"
 }
